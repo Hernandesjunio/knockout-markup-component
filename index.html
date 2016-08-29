@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
+
+    <script src="Scripts/jquery-3.1.0.js"></script>
+    <script src="Scripts/knockout-3.4.0.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/custom.js"></script>
+
+    <script src="Scripts/require.js" data-main="./Scripts/vendor/main"></script>
+
+</head>
+<body>
+
+    <modal-component params="items: someArrayOfPeople, modalID: someArrayOfPeople.modalID" >
+
+        <modal-head>
+            <h4 class="modal-title">Modal title&nbsp;<i data-bind=""></i></h4>
+        </modal-head>
+
+        <modal-body>
+            <p>Body Modal&hellip;</p>
+            <p>Body Modal&hellip;</p>
+            <p>Body Modal&hellip;</p>
+
+            <fieldset>
+                <legend>Sub Componente</legend>
+
+            <sub-component params="element:{id: 20,descricao: 'Test data sub component'}">
+
+                <h5 data-bind="text:id"></h5><br />
+                <h5 data-bind="text:descricao"></h5>
+
+            </sub-component>
+            </fieldset>
+
+        </modal-body>
+
+        <modal-footer>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" data-bind="click:fazAlgo">Save changes</button>
+        </modal-footer>
+
+    </modal-component>
+
+    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal" data-bind="attr:{'data-target':'#'+someArrayOfPeople.modalID}">Modal</a>
+
+    <script type="text/javascript">
+
+        domReady = function (callback) {
+            require(['!domReady'], function (domReady, tmpl) {
+                domReady(callback);
+            });
+        }
+
+        domReady(function () {
+            require(['sub-component', 'modal-component'], function () {
+                console.log('ready');
+                ko.applyBindings({
+                    someArrayOfPeople: {
+                        items: ko.observableArray([
+                            { name: 'Lewis', age: 56 },
+                            { name: 'Hathaway', age: 34 }
+                        ]), fazAlgo: function () {
+                            alert('Fiz algo');
+                        }, modalID: 'meuModal'
+                    }
+                });
+                setTimeout(function () {
+
+                    $(".modal").modal('show');
+                }, 1000);
+            });
+        });
+    </script>
+
+</body>
+</html>
